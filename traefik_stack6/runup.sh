@@ -135,9 +135,7 @@ export TRAEFIK_REPLICAS=$(docker node ls -q | wc -l)
 
     # traefik
     chmod 600 ./configs/acme.json
-    docker stack deploy -c traefik.yml traefik-consul
-
-    #docker stack deploy toolproxy -c toolproxy.yml;
+    docker stack deploy toolproxy -c toolproxy.yml;
     echo; sleep 1;
 
     # webapps
