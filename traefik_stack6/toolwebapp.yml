@@ -38,15 +38,15 @@ services:
       # With a real domain name you would 
       # "traefik.frontend.rule=Host:mydummysite.tk"
       - "traefik.frontend.rule=PathPrefixStrip:/"
-      - "traefik.backend=home"
-      - "traefik.port=2015"
-      - "traefik.weight=10"
-      - "traefik.enable=true"
-      - "traefik.passHostHeader=true"
-      - "traefik.docker.network=ntw_front"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.backend.loadbalancer.swarm=true"
-      - "traefik.backend.loadbalancer.method=drr"
+      - traefik.enable=true
+      - traefik.port=8080
+      - traefik.tags=ntw_front
+      - traefik.docker.network=ntw_front
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
 
   who1:
     <<: *default-opts

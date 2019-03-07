@@ -10,7 +10,7 @@ ENV_EDGE_BRANCH="2.02";
 ENV_MONOREPO="traefik_stack6";
 
 echo "Setup the stack" && \
-source <(curl -s https://raw.githubusercontent.com/pascalandy/docker-stack-this/master/play-with-docker-setup.sh) && \
+source <(curl -s https://raw.githubusercontent.com/pascalandy/docker-stack-this/2.02/play-with-docker-setup.sh) && \
 sleep 2 && \
 
 git checkout "$ENV_EDGE_BRANCH" && \

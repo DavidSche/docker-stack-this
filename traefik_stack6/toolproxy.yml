@@ -1,6 +1,17 @@
 version: '3.3'
 
+networks:
+  ntw_front:
+    external: true
+  ntw_proxy:
+    external: true
+
+volumes:
+  consul-data-leader:
+  consul-data-replica:
+
 services:
+
   consul-leader:
     image: consul
     command: agent -server -client=0.0.0.0 -bootstrap -ui
@@ -25,6 +36,7 @@ services:
         # Traefik service that listens to HTTPS
         - traefik.webservice.frontend.entryPoints=https
         - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
+
   consul-replica:
     image: consul
     command: agent -server -client=0.0.0.0 -retry-join="consul-leader"
@@ -41,6 +53,7 @@ services:
       placement:
         preferences:
           - spread: node.id
+
   traefik:
     image: traefik:1.7.9-alpine
     ports:
@@ -93,17 +106,6 @@ services:
       - ntw_proxy
     depends_on:
       - consul-leader
-        
-volumes:
-  consul-data-leader:
-  consul-data-replica:
-
-networks:
-  ntw_front:
-    external: true
-  ntw_proxy:
-    external: true
-
 
 # credits: https://dockerswarm.rocks/traefik/
 # 
