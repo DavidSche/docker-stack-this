@@ -41,11 +41,7 @@ services:
         - traefik.port=80
         - traefik.tags=ntw_front
         - traefik.docker.network=ntw_front
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
+        - traefik.frontend.entryPoints=http
   db:
     image: couchdb:2.3.0
     volumes:

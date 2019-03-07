@@ -140,7 +140,7 @@ function goto_myscript() {
     echo; sleep 1;
 
     # gui alt
-    docker stack deploy -c swarmpit.yml swarmpit;
+    docker stack deploy -c toolswarmpit.yml toolswarmpit;
 
     # wordpress
         # the system is path is at ./docker-stack5
