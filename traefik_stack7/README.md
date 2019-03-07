@@ -7,7 +7,7 @@ Checkout: traefik_stack5
 ```
 echo "CONFIGURE ENV_VAR" && \
 ENV_EDGE_BRANCH="2.02";
-ENV_MONOREPO="traefik_stack6";
+ENV_MONOREPO="traefik_stack7";
 
 echo "Setup the stack" && \
 source <(curl -s https://raw.githubusercontent.com/pascalandy/docker-stack-this/2.02/play-with-docker-setup.sh) && \
