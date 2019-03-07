@@ -23,7 +23,7 @@ services:
       - 888:8080
     networks:
       - net
-      - traefik-public
+      - ntw_front
     deploy:
       resources:
         limits:
@@ -60,9 +60,9 @@ services:
         reservations:
           cpus: '0.15'
           memory: 256M
-      placement:
-        constraints:
-          - node.labels.swarmpit.db-data == true
+      #placement:
+      #  constraints:
+      #   - node.labels.swarmpit.db-data == true
 
   agent:
     image: swarmpit/agent:latest

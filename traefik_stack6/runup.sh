@@ -139,6 +139,9 @@ function goto_myscript() {
     docker stack deploy toolgui -c toolportainer.yml;
     echo; sleep 1;
 
+    # gui alt
+    docker stack deploy -c swarmpit.yml swarmpit;
+
     # wordpress
         # the system is path is at ./docker-stack5
     #_MYSQL_DIR="$(pwd)/html/db/mysql"
