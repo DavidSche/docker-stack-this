@@ -11,14 +11,14 @@ services:
       - 'CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}'
     networks:
       - default
-      - traefik-public
+      - ntw_proxy
     deploy:
       labels:
         - traefik.frontend.rule=Host:consul.${DOMAIN}
         - traefik.enable=true
         - traefik.port=8500
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-ntw_proxy}
+        - traefik.docker.network=ntw_proxy
         # Traefik service that listens to HTTP
         - traefik.redirectorservice.frontend.entryPoints=http
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
@@ -35,7 +35,7 @@ services:
       - 'CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}'
     networks:
       - default
-      - traefik-public
+      - ntw_proxy
     deploy:
       replicas: ${CONSUL_REPLICAS:-3}
       placement:
@@ -57,8 +57,8 @@ services:
         - traefik.frontend.rule=Host:traefik.${DOMAIN}
         - traefik.enable=true
         - traefik.port=8080
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
+        - traefik.tags=ntw_proxy
+        - traefik.docker.network=ntw_proxy
         # Traefik service that listens to HTTP
         - traefik.redirectorservice.frontend.entryPoints=http
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
@@ -72,7 +72,7 @@ services:
       --docker.swarmmode
       --docker.watch
       --docker.exposedbydefault=false
-      --constraints=tag==traefik-public
+      --constraints=tag==ntw_proxy
       --entrypoints='Name:http Address::80'
       --entrypoints='Name:https Address::443 TLS'
       --consul
@@ -89,7 +89,8 @@ services:
       --api
     networks:
       - default
-      - traefik-public
+      - ntw_front
+      - ntw_proxy
     depends_on:
       - consul-leader
         
@@ -98,7 +99,9 @@ volumes:
   consul-data-replica:
 
 networks:
-  traefik-public:
+  ntw_front:
+    external: true
+  ntw_proxy:
     external: true
 
 

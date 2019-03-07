@@ -106,25 +106,18 @@ function goto_myscript() {
             echo "Network: ${NTW_PROXY} already exist."
         fi
 
-    NTW_PROXY="traefik-public"
-        if [ ! "$(docker network ls --filter name=${NTW_PROXY} -q)" ]; then
-            docker network create --driver overlay --attachable --opt encrypted "${NTW_PROXY}"
-            echo "Network: ${NTW_PROXY} was created."
-        else
-            echo "Network: ${NTW_PROXY} already exist."
-        fi
+    export EMAIL=admintest@froutel.net
+    export DOMAIN=sys.froutel.net
+    export USERNAME=admin
+    export PASSWORD=changethis
 
-export EMAIL=admin@example.com
-export DOMAIN=sys.example.com
-export USERNAME=admin
-export PASSWORD=changethis
-export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
-echo $HASHED_PASSWORD
-export CONSUL_REPLICAS=3
+    export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
+    echo $HASHED_PASSWORD
+    export PASSWORD="null"
 
-export TRAEFIK_REPLICAS=$(docker node ls -q | wc -l)
-#export TRAEFIK_REPLICAS=3
+    export CONSUL_REPLICAS=$(docker node ls -q | wc -l)
 
+    export TRAEFIK_REPLICAS=$(docker node ls -q | wc -l)
 
 
     echo; echo "Show network...";
