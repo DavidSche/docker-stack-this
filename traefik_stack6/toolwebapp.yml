@@ -14,7 +14,7 @@ services:
 
   home:
     <<: *default-opts
-    image: abiosoft/caddy:0.11.1-no-stats
+    image: abiosoft/caddy:0.11.4-no-stats
     networks:
       - ntw_front
     #volumes:
@@ -37,9 +37,10 @@ services:
       labels:
       # With a real domain name you would 
       # "traefik.frontend.rule=Host:mydummysite.tk"
-      - "traefik.frontend.rule=PathPrefixStrip:/"
+      - traefik.frontend.rule=PathPrefixStrip:/
+      - traefik.backend=home
       - traefik.enable=true
-      - traefik.port=8080
+      - traefik.port=80
       - traefik.tags=ntw_front
       - traefik.docker.network=ntw_front
       # Traefik service that listens to HTTP
@@ -71,16 +72,17 @@ services:
           cpus: '0.05'
           memory: 4M
       labels:
-      - "traefik.frontend.rule=PathPrefixStrip:/who1"
-      - "traefik.backend=who1"
-      - "traefik.port=80"
-      - "traefik.weight=10"
-      - "traefik.enable=true"
-      - "traefik.passHostHeader=true"
-      - "traefik.docker.network=ntw_front"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.backend.loadbalancer.swarm=true"
-      - "traefik.backend.loadbalancer.method=drr"
+      - traefik.frontend.rule=PathPrefixStrip:/who1
+      - traefik.backend=who1
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=ntw_front
+      - traefik.docker.network=ntw_front
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
 
   who2:
     <<: *default-opts
@@ -135,15 +137,16 @@ services:
           cpus: '0.05'
           memory: 4M
       labels:
-      - "traefik.frontend.rule=PathPrefixStrip:/who3"
-      - "traefik.backend=who3"
-      - "traefik.port=80"
-      - "traefik.weight=10"
-      - "traefik.enable=true"
-      - "traefik.passHostHeader=true"
-      - "traefik.docker.network=ntw_front"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.backend.loadbalancer.swarm=true"
-      - "traefik.backend.loadbalancer.method=drr"
+      - traefik.frontend.rule=PathPrefixStrip:/who3
+      - traefik.backend=who3
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=ntw_front
+      - traefik.docker.network=ntw_front
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
 
 # https://github.com/pascalandy/docker-stack-this
