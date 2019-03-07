@@ -3,6 +3,9 @@ version: '3.3'
 networks:
   ntw_front:
     external: true
+  net:
+    driver: overlay
+    attachable: true
 
 volumes:
   db-data:
