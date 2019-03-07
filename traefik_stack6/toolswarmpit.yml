@@ -1,9 +1,6 @@
 version: '3.3'
 
 networks:
-  net:
-    driver: overlay
-    attachable: true
   ntw_front:
     external: true
 
@@ -13,7 +10,7 @@ volumes:
 
 services:
 
-  app:
+  swarmpit:
     image: swarmpit/swarmpit:latest
     environment:
       - SWARMPIT_DB=http://db:5984
@@ -36,12 +33,13 @@ services:
         constraints:
           - node.role == manager
       labels:
-        - traefik.frontend.rule=PathPrefixStrip:/swarmpit
-        - traefik.enable=true
-        - traefik.port=80
-        - traefik.tags=ntw_front
-        - traefik.docker.network=ntw_front
-        - traefik.frontend.entryPoints=http
+        - "traefik.frontend.rule=PathPrefixStrip:/swarmpit"
+        - "traefik.backend=swarmpit"
+        - "traefik.port=8080"
+        - "traefik.enable=true"
+        - "traefik.docker.network=ntw_front"
+        - "traefik.frontend.entryPoints=http"
+
   db:
     image: couchdb:2.3.0
     volumes:
@@ -58,7 +56,7 @@ services:
           memory: 256M
       #placement:
       #  constraints:
-      #   - node.labels.swarmpit.db-data == true
+      #    - node.labels.swarmpit.db-data == true
 
   agent:
     image: swarmpit/agent:latest

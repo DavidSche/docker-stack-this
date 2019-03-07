@@ -106,20 +106,6 @@ function goto_myscript() {
             echo "Network: ${NTW_PROXY} already exist."
         fi
 
-    export EMAIL=admintest@froutel.net
-    export DOMAIN=sys.froutel.net
-    export USERNAME=admin
-    export PASSWORD=changethis
-
-    export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
-    echo $HASHED_PASSWORD
-    export PASSWORD="null"
-
-    export CONSUL_REPLICAS=$(docker node ls -q | wc -l)
-
-    export TRAEFIK_REPLICAS=$(docker node ls -q | wc -l)
-
-
     echo; echo "Show network...";
     docker network ls | grep "ntw_";
     echo; echo; sleep 2;
@@ -139,8 +125,9 @@ function goto_myscript() {
     docker stack deploy toolgui -c toolportainer.yml;
     echo; sleep 1;
 
-    # gui alt
-    docker stack deploy -c toolswarmpit.yml toolswarmpit;
+    # gui2
+    docker stack deploy toolswarmpit -c toolswarmpit.yml;
+    echo; sleep 1;
 
     # wordpress
         # the system is path is at ./docker-stack5
